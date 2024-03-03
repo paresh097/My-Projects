@@ -1,0 +1,1200 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head></head><body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+    
+    
+    
+<div style="display: none;"></div>
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[111]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.mlab</span> <span class="k">as</span> <span class="nn">mlab</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">import</span> <span class="n">figure</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">chained_assignment</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[112]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;Downloads/Datasample.csv&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output">
+<pre>(204, 41)
+Object Number               object
+Object ID                    int64
+Department                  object
+Object Name                 object
+Title                       object
+Culture                     object
+Period                      object
+Dynasty                     object
+Reign                       object
+Portfolio                   object
+Artist Role                 object
+Artist Prefix               object
+Artist Display Name         object
+Artist Display Bio          object
+Artist Suffix               object
+Artist Nationality          object
+Artist Begin Date           object
+Artist End Date             object
+Object Date                 object
+Object Begin Date            int64
+Object End Date            float64
+Medium                      object
+Dimensions                  object
+Credit Line                 object
+Geography Type              object
+City                        object
+State                       object
+County                      object
+Country                     object
+Region                      object
+Subregion                   object
+Locale                      object
+Locus                       object
+Excavation                  object
+River                       object
+Classification              object
+Rights and Reproduction     object
+Link Resource               object
+Metadata Date               object
+Repository                  object
+Tags                        object
+dtype: object
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[113]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_num</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">])</span>
+<span class="n">numeric_col</span> <span class="o">=</span> <span class="n">df_num</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">numeric_col</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output">
+<pre>[&#39;Object ID&#39; &#39;Object Begin Date&#39; &#39;Object End Date&#39;]
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[114]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df_non_numeric</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">])</span>
+<span class="n">non_numeric_cols</span> <span class="o">=</span> <span class="n">df_non_numeric</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">non_numeric_cols</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output">
+<pre>[&#39;Object Number&#39; &#39;Department&#39; &#39;Object Name&#39; &#39;Title&#39; &#39;Culture&#39; &#39;Period&#39;
+ &#39;Dynasty&#39; &#39;Reign&#39; &#39;Portfolio&#39; &#39;Artist Role&#39; &#39;Artist Prefix&#39;
+ &#39;Artist Display Name&#39; &#39;Artist Display Bio&#39; &#39;Artist Suffix&#39;
+ &#39;Artist Nationality&#39; &#39;Artist Begin Date&#39; &#39;Artist End Date&#39; &#39;Object Date&#39;
+ &#39;Medium&#39; &#39;Dimensions&#39; &#39;Credit Line&#39; &#39;Geography Type&#39; &#39;City&#39; &#39;State&#39;
+ &#39;County&#39; &#39;Country&#39; &#39;Region&#39; &#39;Subregion&#39; &#39;Locale&#39; &#39;Locus&#39; &#39;Excavation&#39;
+ &#39;River&#39; &#39;Classification&#39; &#39;Rights and Reproduction&#39; &#39;Link Resource&#39;
+ &#39;Metadata Date&#39; &#39;Repository&#39; &#39;Tags&#39;]
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[115]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">#Missing data</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="mi">41</span><span class="p">]</span> <span class="c1"># first 30 columns</span>
+<span class="n">colours</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#000099&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffff00&#39;</span><span class="p">]</span> <span class="c1"># colours - yellow is null. blue is not null.</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[115]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult">
+<pre>&lt;AxesSubplot:&gt;</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedImage jp-OutputArea-output">
+<img src="javascript://"/>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[116]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">#droping missing value</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Metadata Date&#39;</span><span class="p">,</span><span class="s1">&#39;Classification&#39;</span><span class="p">,</span><span class="s1">&#39;Link Resource&#39;</span><span class="p">,</span><span class="s1">&#39;Repository&#39;</span><span class="p">,</span><span class="s1">&#39;Repository&#39;</span><span class="p">,</span><span class="s1">&#39;Object Number&#39;</span><span class="p">,</span><span class="s1">&#39;Artist Begin Date&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;Artist End Date&#39;</span><span class="p">,</span><span class="s1">&#39;Geography Type&#39;</span><span class="p">,</span><span class="s1">&#39;City&#39;</span><span class="p">,</span><span class="s1">&#39;State&#39;</span><span class="p">,</span><span class="s1">&#39;County&#39;</span><span class="p">,</span><span class="s1">&#39;Tags&#39;</span><span class="p">,</span><span class="s1">&#39;Region&#39;</span><span class="p">,</span><span class="s1">&#39;Period&#39;</span><span class="p">,</span><span class="s1">&#39;Dynasty&#39;</span><span class="p">,</span><span class="s1">&#39;Reign&#39;</span><span class="p">,</span><span class="s1">&#39;Portfolio&#39;</span><span class="p">,</span>
+<span class="s1">&#39;Artist Suffix&#39;</span><span class="p">,</span><span class="s1">&#39;Artist Prefix&#39;</span><span class="p">,</span><span class="s1">&#39;Subregion&#39;</span><span class="p">,</span> <span class="s1">&#39;Locale&#39;</span><span class="p">,</span> <span class="s1">&#39;Locus&#39;</span><span class="p">,</span> <span class="s1">&#39;Excavation&#39;</span><span class="p">,</span> <span class="s1">&#39;River&#39;</span><span class="p">,</span><span class="s1">&#39;Rights and Reproduction&#39;</span><span class="p">,</span><span class="s1">&#39;Object Date&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Artist Display Bio&#39;</span><span class="p">,</span><span class="s1">&#39;Artist Role&#39;</span><span class="p">,</span><span class="s1">&#39;Artist Display Name&#39;</span><span class="p">,</span><span class="s1">&#39;Dimensions&#39;</span><span class="p">])</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[138]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Users\91841\Downloads\web analytics\DataSample1.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[117]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="mi">23</span><span class="p">]</span> <span class="c1"># first 30 columns</span>
+<span class="n">colours</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#000099&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffff00&#39;</span><span class="p">]</span> <span class="c1"># colours - yellow is null. blue is not null.</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[117]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult">
+<pre>&lt;AxesSubplot:&gt;</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedImage jp-OutputArea-output">
+<img src="javascript://"/>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[118]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="p">[</span><span class="s1">&#39;Artist Nationality&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="c1">#df1.info()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[118]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult">
+<pre>array([nan, &#39;Chinese&#39;, &#39;Japanese&#39;, &#39;Japanese|Japanese&#39;, &#39;British&#39;,
+       &#39;American|American&#39;, &#39;Italian&#39;, &#39;French, born Italy&#39;,
+       &#39;French|French&#39;, &#39;American&#39;, &#39;British|British&#39;, &#39;Belgian&#39;,
+       &#39;French&#39;, &#39;French|French|French|French|French|French&#39;,
+       &#39;American|American|American&#39;, &#39;French|French?|French&#39;,
+       &#39;British|British|British|British|British|British|British&#39;,
+       &#39;Italian|Bohemian&#39;, &#39;Dutch|Dutch|Dutch&#39;,
+       &#39;French|French|French|French|French&#39;, &#39;Dutch&#39;,
+       &#39;Netherlandish|German&#39;, &#39;Italian|Italian&#39;, &#39;French|British&#39;,
+       &#39;French|Italian&#39;, &#39;German&#39;, &#39;American, born Russia&#39;,
+       &#39;Finnish|Finnish&#39;, &#39;British, Scottish&#39;, &#39;Mexican&#39;,
+       &#39;Italian|Italian|Italian|Italian|Italian&#39;,
+       &#39;Italian|Italian|German&#39;, &#39;Canadian&#39;,
+       &#39;Scottish|British|British, Scottish|British|British&#39;, &#39;Austrian&#39;,
+       &#39;Italian|British&#39;, &#39;German|American|American|American&#39;],
+      dtype=object)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[119]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">Culture</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[119]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult">
+<pre>array([&#39;American&#39;, &#39;Dutch&#39;, &#39;Japanese&#39;, &#39;German&#39;, &#39;possibly Spanish&#39;,
+       &#39;China&#39;, &#39;Thailand&#39;, &#39;Japan&#39;, &#39;India (Guler, Punjab Hills)&#39;,
+       &#39;British&#39;, &#39;Italian&#39;, &#39;European, Eastern&#39;, &#39;French&#39;,
+       &#39;probably French&#39;, &#39;Romanian&#39;, &#39;European&#39;, &#39;possibly Greek&#39;,
+       &#39;German, Silesia (Bunzlau)&#39;, &#39;Italian, Venice&#39;, &#39;German, Hanau&#39;,
+       &#39;probably German&#39;, &#39;British, Chelsea&#39;, &#39;Spanish&#39;, &#39;Cypriot&#39;,
+       &#39;Italic&#39;, &#39;Greek, Attic&#39;, &#39;Minoan&#39;, &#39;Minoan, Crete&#39;, nan,
+       &#39;Asmat people&#39;, &#39;Aztec&#39;, &#39;Atlantic Watershed&#39;, &#39;Abelam people&#39;,
+       &#39;Quechua&#39;, &#39;Mexican&#39;, &#39;Timor&#39;, &#39;Iran&#39;, &#39;Byzantine&#39;, &#39;Catalan&#39;,
+       &#39;South Netherlandish&#39;, &#39;European or Middle Eastern&#39;,
+       &#39;British, Stoke-on-Trent, Staffordshire&#39;], dtype=object)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[137]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df1</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Culture&#39;</span><span class="p">,</span><span class="s1">&#39;Artist Nationality&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">groups</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output">
+<pre>{(&#39;Abelam people&#39;, &#39;Abelam&#39;): [74, 75], (&#39;American&#39;, &#39;American&#39;): [0, 1, 3, 4, 25, 32, 36, 37, 38, 40, 41, 42, 63, 64, 67, 68, 69, 82, 89, 99, 102, 103, 106, 108, 109, 119, 121, 152, 156, 158, 159, 163, 164, 169], (&#39;Asmat people&#39;, &#39;Asmat&#39;): [71], (&#39;Atlantic Watershed&#39;, &#39;Atlantian&#39;): [73], (&#39;Aztec&#39;, &#39;Aztec&#39;): [72], (&#39;Belgian&#39;, &#39;Belgian&#39;): [66], (&#39;British&#39;, &#39;British&#39;): [24, 49, 88, 104, 196], (&#39;British&#39;, &#39;British|British&#39;): [35], (&#39;Byzantine&#39;, &#39;Byzantine&#39;): [131], (&#39;Catalan&#39;, &#39;Catalan&#39;): [133], (&#39;China&#39;, &#39;Chinese&#39;): [12, 13, 21], (&#39;Cypriot&#39;, &#39;Cypriot&#39;): [56, 57], (&#39;Dutch&#39;, &#39;Dutch&#39;): [2, 105], (&#39;European&#39;, &#39;European&#39;): [27, 39, 50, 175], (&#39;French&#39;, &#39;French|French&#39;): [28, 29, 30, 31, 33, 44, 53, 54, 70, 92, 94, 118, 120, 122, 130, 132], (&#39;German&#39;, &#39;German&#39;): [7, 8, 9, 45, 47, 48, 55, 117], (&#39;Greek&#39;, &#39;Greek&#39;): [43, 59, 174, 178, 182, 186, 190, 193], (&#39;Indian&#39;, &#39;Indian&#39;): [22], (&#39;Iran&#39;, &#39;Iranian&#39;): [79], (&#39;Italian&#39;, &#39;Italian&#39;): [26, 46, 51, 58, 83, 84, 85, 96, 97, 98, 129, 138, 139], (&#39;Japan&#39;, &#39;Japanese&#39;): [5, 6, 10, 15, 16, 17, 18, 19, 20, 23, 90], (&#39;Mexican&#39;, &#39;Mexican&#39;): [77, 140, 166], (&#39;Minoan&#39;, &#39;Minoan&#39;): [60, 61], (&#39;Quechua&#39;, &#39;Quechua&#39;): [76], (&#39;Romanian&#39;, &#39;Romanian&#39;): [34], (&#39;South Netherlandish&#39;, &#39;Netherland&#39;): [134], (&#39;Spanish&#39;, &#39;Spanish&#39;): [11, 52], (&#39;Thailand&#39;, &#39;Thailand&#39;): [14], (&#39;Timor&#39;, &#39;Timor&#39;): [78], (nan, &#39;American, born Russia&#39;): [135, 162], (nan, &#39;American|American&#39;): [114], (nan, &#39;American|American|American&#39;): [87], (nan, &#39;Austrian&#39;): [161], (nan, &#39;British, Scottish&#39;): [137], (nan, &#39;British|British|British|British|British|British|British&#39;): [93], (nan, &#39;Canadian&#39;): [157], (nan, &#39;Dutch|Dutch|Dutch&#39;): [100], (nan, &#39;Finnish|Finnish&#39;): [136], (nan, &#39;French|British&#39;): [113], (nan, &#39;French|French?|French&#39;): [91], (nan, &#39;French|French|French|French|French&#39;): [101], (nan, &#39;French|French|French|French|French|French&#39;): [86], (nan, &#39;French|Italian&#39;): [116], (nan, &#39;German|American|American|American&#39;): [168], (nan, &#39;Italian|Bohemian&#39;): [95], (nan, &#39;Italian|British&#39;): [167], (nan, &#39;Italian|Italian&#39;): [110, 112], (nan, &#39;Italian|Italian|German&#39;): [155], (nan, &#39;Italian|Italian|Italian|Italian|Italian&#39;): [153], (nan, &#39;Netherlandish|German&#39;): [107], (nan, &#39;Scottish|British|British, Scottish|British|British&#39;): [160], (nan, nan): [62, 65, 80, 81, 111, 115, 123, 124, 125, 126, 127, 128, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 154, 165, 170, 171, 172, 173, 176, 177, 179, 180, 181, 183, 184, 185, 187, 188, 189, 191, 192, 194, 195, 197, 198, 199, 200, 201, 202, 203]}
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[135]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">#fixing the missing value with valuable information </span>
+    
+<span class="c1">#fixing Artist Nationality values</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">df1</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;American&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;American&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Dutch&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Dutch&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Japanese&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Japan&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Japanese&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;German&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;German, Silesia (Bunzlau)&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;German, Hanau&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;probably German&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;German&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;possibly Spanish&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Spanish&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Spanish&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;China&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Chinese&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Thailand&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Thailand&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;European, Eastern&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;European&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;European or Middle Eastern&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;European&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;probably French&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;French&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;French|French&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Romanian&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Romanian&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;British, Chelsea&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;British, Stoke-on-Trent, Staffordshire&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;British&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;possibly Greek&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Greek, Attic&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Greek&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Italian, Venice&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Italian&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Cypriot&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Cypriot&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Italic&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Italian&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Minoan&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Minoan, Crete&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Minoan&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Asmat people&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Asmat&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Aztec&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Aztec&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Atlantic Watershed&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Atlantian&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Abelam people&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Abelam&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Quechua&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Quechua&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Mexican&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Mexican&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Timor&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Timor&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Iran&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Iranian&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Byzantine&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Byzantine&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Catalan&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Catalan&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;South Netherlandish&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Netherland&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;India (Guler, Punjab Hills)&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Indian&#39;</span>
+      
+    
+
+    
+    
+    
+          
+            
+
+    
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[136]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">#fixing culture column values  </span>
+        
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">df1</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;American&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;American&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Dutch&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Dutch&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Japanese&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Japan&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Japan&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;German&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;German, Silesia (Bunzlau)&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;German, Hanau&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;probably German&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;German&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;possibly Spanish&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Spanish&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Spanish&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Chinese&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;China&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Thailand&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Thailand&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;European, Eastern&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;European&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;European or Middle Eastern&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;European&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;French&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;French&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Romanian&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Romanian&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;British, Chelsea&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;British, Stoke-on-Trent, Staffordshire&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;British&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;British&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;possibly Greek&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Greek, Attic&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Greek&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Greek&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Italian, Venice&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Italian&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Italic&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Italian&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Cypriot&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Cypriot&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Minoan&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Minoan, Crete&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Minoan&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Minoan&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Asmat people&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Asmat&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Asmat&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Aztec&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Aztec&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Atlantic Watershed&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Atlantian&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Abelam people&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Abelam&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Quechua&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Quechua&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Mexican&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Mexican&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Timor&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Timor&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Iran&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Iranian&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Byzantine&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Byzantine&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Catalan&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Catalan&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;South Netherlandish&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Netherland&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;India (Guler, Punjab Hills)&#39;</span> <span class="ow">or</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Indian&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Indian&#39;</span>
+    <span class="k">elif</span> <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Belgian&#39;</span><span class="p">:</span>
+        <span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Belgian&#39;</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[141]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">#After fixing the value in excel sheet again importing the file</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Users\91841\Downloads\web analytics\Datasample2.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[154]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="mi">11</span><span class="p">]</span> <span class="c1"># first 30 columns</span>
+<span class="n">colours</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#000099&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffff00&#39;</span><span class="p">]</span> <span class="c1"># colours - yellow is null. blue is not null.</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[154]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult">
+<pre>&lt;AxesSubplot:&gt;</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedImage jp-OutputArea-output">
+<img src="javascript://"/>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[105]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">#Irregular data or Outliers</span>
+
+<span class="c1">#df1.hist(bins=100)</span>
+
+<span class="n">df2</span><span class="o">.</span><span class="n">boxplot</span><span class="p">()</span>
+
+<span class="c1">#date is unique </span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[105]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult">
+<pre>&lt;AxesSubplot:&gt;</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedImage jp-OutputArea-output">
+<img src="javascript://"/>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[150]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="p">[</span><span class="s1">&#39;Object ID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[150]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult">
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>Object ID</th>
+      <th>Department</th>
+      <th>Object Name</th>
+      <th>Title</th>
+      <th>Culture</th>
+      <th>Artist Nationality</th>
+      <th>Object Begin Date</th>
+      <th>Object End Date</th>
+      <th>Medium</th>
+      <th>Credit Line</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>31</th>
+      <td>31</td>
+      <td>100359</td>
+      <td>Costume Institute</td>
+      <td>Hat</td>
+      <td>Hat</td>
+      <td>French</td>
+      <td>French|French</td>
+      <td>1949</td>
+      <td>1949.0</td>
+      <td>wool, cotton</td>
+      <td>Gift of Mary S. Ryan, 1981</td>
+      <td>France</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>75</td>
+      <td>316760</td>
+      <td>Arts of Africa, Oceania, and the Americas</td>
+      <td>Painting</td>
+      <td>Painting</td>
+      <td>Abelam people</td>
+      <td>Abelam</td>
+      <td>1900</td>
+      <td>2000.0</td>
+      <td>Paper, paint</td>
+      <td>Gift of Lita Osmundsen, 1992</td>
+      <td>Papua New Guinea</td>
+    </tr>
+    <tr>
+      <th>139</th>
+      <td>139</td>
+      <td>486599</td>
+      <td>Modern and Contemporary Art</td>
+      <td>Bowl</td>
+      <td>&quot;Tard la Nuit&quot; Bowl</td>
+      <td>Italian</td>
+      <td>Italian</td>
+      <td>1989</td>
+      <td>1989.0</td>
+      <td>Glass</td>
+      <td>Gift of Peter T. Joseph, 1995</td>
+      <td>Italy</td>
+    </tr>
+    <tr>
+      <th>148</th>
+      <td>148</td>
+      <td>563318</td>
+      <td>Egyptian Art</td>
+      <td>Jar Label</td>
+      <td>Jar label fragments</td>
+      <td>Egyptian</td>
+      <td>Egyptian</td>
+      <td>-1390</td>
+      <td>-1390.0</td>
+      <td>Pottery and ink, paint</td>
+      <td>Rogers Fund, 1917</td>
+      <td>Egypt</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[169]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">#removing duplicate object id&#39;s</span>
+<span class="n">df3</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s1">&#39;Object ID&#39;</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s1">&#39;last&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df3</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output">
+<pre>(204, 12)
+(200, 12)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[170]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df3</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Users\91841\Downloads\web analytics\DataSample3.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[171]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Users\91841\Downloads\web analytics\Datasample3.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[172]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df4</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output">
+<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 199 entries, 0 to 198
+Data columns (total 11 columns):
+ #   Column              Non-Null Count  Dtype 
+---  ------              --------------  ----- 
+ 0   Object ID           199 non-null    int64 
+ 1   Department          199 non-null    object
+ 2   Object Name         199 non-null    object
+ 3   Title               199 non-null    object
+ 4   Culture             199 non-null    object
+ 5   Artist Nationality  199 non-null    object
+ 6   Object Begin Date   199 non-null    int64 
+ 7   Object End Date     199 non-null    int64 
+ 8   Medium              199 non-null    object
+ 9   Credit Line         199 non-null    object
+ 10  Country             199 non-null    object
+dtypes: int64(3), object(8)
+memory usage: 17.2+ KB
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[179]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df4</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[179]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult">
+<pre>(199, 11)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[173]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df4</span><span class="p">[</span><span class="n">df4</span><span class="p">[</span><span class="s1">&#39;Object End Date&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="n">df4</span><span class="p">[</span><span class="s1">&#39;Object Begin Date&#39;</span><span class="p">]]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[173]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult">
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Object ID</th>
+      <th>Department</th>
+      <th>Object Name</th>
+      <th>Title</th>
+      <th>Culture</th>
+      <th>Artist Nationality</th>
+      <th>Object Begin Date</th>
+      <th>Object End Date</th>
+      <th>Medium</th>
+      <th>Credit Line</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>93</th>
+      <td>360750</td>
+      <td>Drawings and Prints</td>
+      <td>Print</td>
+      <td>Head of a muscular old man in profile to left ...</td>
+      <td>Italian|Bohemian</td>
+      <td>Italian|Bohemian</td>
+      <td>1677</td>
+      <td>1625</td>
+      <td>Etching; only state</td>
+      <td>Purchase, Joseph Pulitzer Bequest, 1917</td>
+      <td>Italy</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[178]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df4</span><span class="o">.</span><span class="n">Country</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[178]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult">
+<pre>array([&#39;United States&#39;, &#39;Netherlands&#39;, &#39;Japan&#39;, &#39;Germany&#39;, &#39;Spain &#39;,
+       &#39;China&#39;, &#39;Thailand&#39;, &#39;India&#39;, &#39;United Kingdom&#39;, &#39;Italy&#39;, &#39;Europe&#39;,
+       &#39;France&#39;, &#39;Romania&#39;, &#39;Greece&#39;, &#39;Cyprus&#39;, &#39;Belgium&#39;, &#39;Indonesia&#39;,
+       &#39;Mexico&#39;, &#39;Costa Rica&#39;, &#39;Papua New Guinea&#39;, &#39;Peru&#39;, &#39;Iran&#39;,
+       &#39;Syria&#39;, &#39;Not Available&#39;, &#39;United states&#39;, &#39;Uninted States&#39;,
+       &#39;present-day Uzbekistan&#39;, &#39;present-day France&#39;, &#39;Netherland&#39;,
+       &#39;Finland&#39;, &#39;Egypt&#39;, &#39;Canada&#39;, &#39;Austria&#39;, &#39;USA&#39;, &#39;Unknown&#39;,
+       &#39;United KIngdom&#39;, &#39;unknown&#39;, &#39;Unnkown&#39;, &#39;UnitedKingdom&#39;],
+      dtype=object)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&#160;[&#160;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor">
+     <div class="CodeMirror cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<script type="module" src="https://s.brightspace.com/lib/bsi/20.22.12-222/unbundled/mathjax.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					if (document.querySelector('math') || /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(document.body.innerHTML)) {
+						document.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+							elm.setAttribute('style', 'display: block; height: 0.5rem;');
+						});
+
+						window.D2L.MathJax.loadMathJax({
+							'outputScale': 1.3,
+							'renderLatex': true
+						});
+					}
+				});</script><script type="module" src="https://s.brightspace.com/lib/bsi/20.22.12-222/unbundled/prism.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					document.querySelectorAll('.d2l-code').forEach(code => {
+						window.D2L.Prism.formatCodeElement(code);
+					});
+				});</script></body></html>
